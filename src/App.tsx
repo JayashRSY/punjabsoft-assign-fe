@@ -7,7 +7,11 @@ interface IStudent {
   class: string;
   rollNumber: string;
 }
-
+// ✅ Automatically set API base URL based on the environment
+const API_BASE_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:5000/api" // Local backend
+    : "https://punjabsoft-assign-be.vercel.app/api"; // Deployed backend
 export default function App() {
   const [query, setQuery] = useState("");
   const [students, setStudents] = useState<IStudent[]>([]);
@@ -22,7 +26,7 @@ export default function App() {
 
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/students?query=${searchTerm}`
+        `${API_BASE_URL}/students?query=${searchTerm}`
       );
       setStudents(res.data);
     } catch (error) {
